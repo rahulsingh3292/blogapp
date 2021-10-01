@@ -18,12 +18,12 @@ def send_activation_mail(email,username):
   to = [email]
   from_mail = settings.EMAIL_HOST_USER
   subject = "Account Activation For Revolve"
-  body = f"Hey {username}, Click to the link Activate your Account \n https://revolve-blog.herkouapp.com/accounts/verify-account?email={encrypt_email(email)}"
+  body = f"Hey {username}, Click to the link Activate your Account \n http://localhost:8000/accounts/verify-account?email={encrypt_email(email)}"
   send_mail(subject,body,from_mail,to)
 
 def forget_password_mail(email):
   to = [email]
   from_mail = settings.EMAIL_HOST_USER
   subject = "Forget Password"
-  body = f" Click The link Reset your password \n https://revolve-blog.herkouapp.com/accounts/forget-password?email={encrypt_email(email)}"
+  body = f" Click The link Reset your password \n https://localhost:8000/accounts/forget-password?email={encrypt_email(email)}"
   send_mail(subject,body,from_mail,to)
