@@ -1,0 +1,119 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Login{% endblock title%}
+{% block content %}
+
+  <section class="footer-2 section-padding gray-bg pb-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        <div class="col-lg-6">
+          <div class="subscribe-footer text-center">
+            <div class="form-group mb-0">
+              <h2 class="mb-3">Login To Revolve</h2>
+              <p class="mb-4" id="statusMsgs">
+                sign-in into your Account.<p>
+                  <div class="form-group form-row align-items-center mb-0">
+                   {% csrf_token %}
+                   <!-- username -->
+           
+              
+                   <!-- Email -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="email" id="email" class="form-control" placeholder="Email Address" autocomplete="off">
+                    </div>
+                    <!-- pass --> 
+                    <div class="col-sm-9 mt-2">
+                      <input type="password" id="password" class="form-control" placeholder="Enter your password" autocomplete="off">
+                    </div>
+                    <!-- confirm pass-->
+                
+                   <input type="hidden" name="next" id="next" value="" />
+                    
+                    
+                    <div class="col-sm-3">
+                      <button type="button" class="btn btn-dark "  id="login">SignIn</button>
+                    </div>
+              
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-btm mt-5 pt-4 border-top">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="list-inline footer-socials-2 text-center">
+                  <li class="list-inline-item"><a href="/accounts/forget-email-page/">Forget Password?</a></li>
+                  <li class="list-inline-item"><a href="/">Home</a></li>
+               
+              
+                </ul>
+              </div>
+            </div>
+         
+          </div>
+      
+        </div>
+      </section>
+{% endblock content%}
+
+{% block extra_js%}
+<script>
+const params = new URLSearchParams(window.location.search);
+$("#next").val(params.get("next"));
+$("#login").click(function (){
+  let email = $("#email").val();
+  let next = $("#next").val();
+  let password = $("#password").val();
+  let csrf = "{{csrf_token}}"
+  
+  if(email== ""){
+    $("#statusMsgs").addClass("text-danger").text("Email is Required")
+    return 
+  }
+  
+  if(password == ""){
+    $("#statusMsgs").addClass("text-danger").text("Password is Required")
+    return
+  }
+  
+  let loginData = {
+    "csrfmiddlewaretoken":csrf,"password":password,"email":email,"next":next
+  }
+  
+  
+  $("#statusMsgs").removeClass("text-danger").addClass("text-info").text("Authenticating...")
+   
+    $.ajax({
+    url : "/accounts/login/",
+    method : "POST",
+    data : loginData,
+    success : function(resp){
+     
+     if(resp["active"] == false){
+       $("#statusMsgs").text("Account Not Activated. please check your inbox to activate account.")
+       return 
+     }
+     
+      if(resp["redirect_to"]){
+         $("#statusMsgs").removeClass("text-info").addClass("text-success").text("Loggged in success");
+         window.location.replace(`${resp["redirect_to"]}`)
+        return 
+      }
+      if(resp["status"]){
+        $("#statusMsgs").removeClass("text-info").addClass("text-success").text('Logged in success')
+        window.location.replace("/")
+      
+        
+      }else{
+        $("#statusMsgs").removeClass("text-info").addClass("text-danger").text("Invalid Email or password Try Again.")
+      }
+      
+      
+    }
+  })
+})
+</script>
+{% endblock extra_js%}

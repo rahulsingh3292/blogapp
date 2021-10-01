@@ -1,0 +1,297 @@
+{% extends 'blog/base.html' %}
+{% load static%}
+
+{% block title %}{{post.title}}{% endblock title%}
+{% block css%} <style type="text/css" media="all">
+  button {
+    outline: none;
+  }
+  button:focus {
+    outline: 0 !important;
+  }
+</style>
+{% endblock css %}
+{% block content %}
+
+<section class="single-block-wrapper section-padding">
+  <div class="container">
+    <div class="row">
+
+      <div class="col-lg-8 col-md-12 col-sm-12 col-xs-12">
+        <div class="single-post">
+          <div class="post-header mb-5 text-center">
+            <div class="meta-cat">
+              <a class="text-danger text-link" href="/blog/category/?category={{post.category.title}}">{{post.category}}</a>
+            </div>
+            <h2 class="post-title mt-2">
+              {{post.title}}
+            </h2>
+
+            <div class="post-meta">
+              <span class="text-uppercase font-sm letter-spacing-1 mr-3">by {{post.author.first_name}} {{post.author.last_name}}</span>
+              <span class="text-uppercase font-sm letter-spacing-1">{{post.created_at}}</span>
+              {% if request.user == post.author %} 
+              <div class="row mt-2">
+                <div class="col">
+                  <a class="btn btn-danger" href="/blog/delete/{{post.id}}/">Delete</a>
+                </div>
+                <div class="col">
+                  <a class="btn btn-primary" href="/blog/update-post/{{post.slug}}/">Edit</a>
+                </div>
+              </div>
+              {% endif%}
+            </div>
+            <div class="post-featured-image mt-5">
+              <img src="{{post.image.url}}" class="img-fluid w-100" alt="featured-image">
+            </div>
+          </div>
+          <div class="post-body">
+            <div class="entry-content">
+
+              {{post.description|safe}}
+            </div>
+
+
+
+
+            <div class="tags-share-box center-box d-flex text-center justify-content-between border-top border-bottom py-3">
+
+              <span class="single-comment-o" style="margin-left:130px;"><i class="fa fa-comment-o"></i> {{comments|length}} comments</span>
+
+            </div>
+          </div>
+        </div>
+
+        <nav class="post-pagination clearfix border-top border-bottom py-4">
+          {% if prev %}
+          <div class="prev-post">
+
+            <a href="{% url 'post_detail'  next.slug %}">
+              <span class="text-uppercase font-sm letter-spacing">Next</span>
+              <h4 class="mt-3">{{next.title}}</h4>
+            </a>
+          </div>
+          {% endif%}
+          {% if next%}
+          <div class="next-post">
+            <a href="{% url 'post_detail' prev.slug %}">
+              <span class="text-uppercase font-sm letter-spacing">Previous</span>
+              <h4 class="mt-3">{{prev.title}}</h4>
+            </a>
+          </div>
+          {% endif%}
+        </nav>
+        <div class="related-posts-block mt-5">
+          <h3 class="news-title mb-4 text-center">
+            You May Also Like
+          </h3>
+          <div class="row">
+
+            {% for related in relateds%}
+            <div class="col-lg-4 col-md-4 col-sm-6">
+              <div class="post-block-wrapper">
+                <a href="{% url 'post_detail' related.slug %}">
+                  <img class="img-fluid" src="{{related.image.url}}" height="50px" width="80px" alt="post-thumbnail" />
+                </a>
+                <div class="post-content mt-3">
+                  <h5>
+                    <a href="{% url 'post_detail' related.slug %}">{{related.title}}</a>
+                  </h5>
+                </div>
+              </div>
+            </div>
+            {% endfor %}
+          </div>
+        </div>
+
+        <!-- Cooment Are -->
+
+        <div class="comment-area my-5">
+
+          <h3 class="mb-4 text-center">{{comments|length}} Comments</h3>
+          {% for comment in comments%}
+
+          <div class="comment-area-box media mt-5" id="comment{{comment.id}}">
+            <img alt="" src="{% static 'images/man.png' %}" width="80" class="mt-2 img-fluid float-left mr-3">
+
+            <div class="media-body ml-4">
+
+              <h4 class="mb-0 ">{{comment.user.first_name}} {{comment.user.last_name}}</h4>
+              <span class="date-comm font-sm text-capitalize text-color"><i class="ti-time mr-2"></i>{{comment.created_at}}</span>
+
+              <div class="comment-content mt-3">
+                <p>
+                  {{comment.description}}
+                </p>
+              </div>
+              {% if request.user.is_authenticated %}
+              <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+                <a onclick="commentForm('comment_submit','{{comment.id}}');" class="text-underline">Reply</a>
+              </div>
+            </div>
+            {% else%}
+            <div class="comment-meta mt-4 mt-lg-0 mt-md-0">
+              <a href="/accounts/login?next=/blog/post-detail/{{post.slug}}/" class="text-underline">Reply</a>
+            </div>
+          </div>
+          {% endif%}
+        </div>
+
+        <!-- Replies -->
+
+        <div class="container ml-2">
+          {% for reply in replies%}
+          {% if reply.comment.id == comment.id %}
+
+          <div class="comment-area-box media mt-5">
+
+            <img alt="" src="{% static 'images/comment.jpeg' %}" class="mt-2 img-fluid float-left mr-3" width="80">
+            <div class="media-body ml-4">
+
+              <h4 class="mb-0 ">{{reply.user.first_name}} {{reply.user.last_name}}</h4>
+              <span class="date-comm font-sm text-capitalize text-color"><i class="ti-time mr-2"></i>{{reply.created_at}}</span>
+
+              <div class="comment-content mt-3">
+                <p>
+                  {{reply.description}}
+                </p>
+              </div>
+
+            </div>
+          </div>
+
+          {% endif %}
+
+          {% endfor %}
+
+          <!-- My -->
+
+
+
+        </div>
+
+        <div class="container ml-2" id="reply{{comment.id}}">
+
+        </div>
+        {% endfor %}
+        <div id="more_comment">
+        </div>
+
+
+        <form class="comment-form mb-5 gray-bg p-5" id="comment-form">
+          <h3 class="mb-4 text-center">Leave  a comment</h3>
+          <div class="row">
+            <input type="hidden" name="post_id" id="post_id" value="{{post.id}}" />
+            <input type="hidden" id="comment_id" value="" />
+            <div class="col-lg-12">
+              <textarea class="form-control mb-3" id="description" cols="30" rows="5" placeholder="Comment"></textarea>
+            </div>
+
+          </div>
+          <div id="reply_cancel">
+
+          </div>
+          {% if request.user.is_authenticated %}
+          <input class="btn btn-primary mt-2" type="button" id="comment_submit" value="Submit Message">
+          {% else%}
+          <a href="/accounts/login?next=/blog/post-detail/{{post.slug}}/">
+            <input class="btn btn-primary mt-2" type="button" id="comment_submit" value="Submit Message"> </a>
+          {% endif%}
+
+        </form>
+
+      </div>
+
+
+      <!-- End comment area -->
+      <div class="col-lg-4 col-md-6 col-sm-12 col-xs-12">
+        <div class="sidebar sidebar-right">
+          <div class="sidebar-wrap mt-5 mt-lg-0">
+            <div class="sidebar-widget about mb-5 text-center p-3">
+              <div class="about-author">
+                {% if post.author.photo %}
+
+                <img src="{{post.author.photo.url}}" alt="" class="img-fluid">
+                {% else%}
+                <img src="{% static 'images/author.jpg' %}" alt="" class="img-fluid">
+                {% endif%}
+
+              </div>
+              <h4 class="mb-0 mt-4">{{post.author.first_name}} {{post.author.last_name}}</h4>
+
+              <p>
+                {{post.author.info}}
+              </p>
+
+            </div>
+
+
+            <div class="sidebar-widget mb-5 ">
+              <h4 class="text-center widget-title">Trending Posts</h4>
+
+
+              {% for trend in trendings %}
+              <div class="media py-3 sidebar-post-item">
+                <a href="{% url 'post_detail' trend.slug %}"><img class="mr-4" src="{{trend.image.url}}" width="80" alt=""></a>
+                <div class="media-body">
+                  <span class="text-muted letter-spacing text-uppercase font-sm">{{trend.created_at}}</span>
+                  <h4><a href="blog-single.html">{{trend.title}}</a></h4>
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+
+            <div class="sidebar-widget category mb-5">
+              <h4 class="text-center widget-title">Catgeories</h4>
+              <ul class="list-unstyled">
+                {% for cat in categories %}
+                <li class="align-items-center d-flex justify-content-between">
+                  <a href="/blog/category/?category={{cat.title}}">{{cat.title}}</a>
+                </li>
+                {% endfor%}
+              </ul>
+            </div>
+
+
+
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+</section>
+
+{% endblock content%}
+{% block extra_js%}
+<script src="{% static 'js/detail.js' %}"></script>
+<script>
+
+
+
+  function commentForm(id, com_id) {
+    $("#comment_id").val(com_id)
+
+    div_height = $("#"+id).height();
+    div_offset = $("#"+id).offset().top;
+    window_height = $(window).height();
+    $('html,body').animate({
+      scrollTop: div_offset-window_height+div_height
+    }, 'fast');
+    $("#reply_cancel").html(`	<input class="btn btn-primary" type="button"  id="cancel_reply" value="Cancel Reply">`)
+
+  }
+
+  $(document).on("click", "#cancel_reply", function() {
+
+    $("#comment_id").val("");
+    $("#reply_cancel").html("");
+  });
+  $("#comment_submit").click(function() {
+    Comment("{{csrf_token}}");
+  })
+
+</script>
+
+{% endblock extra_js%}

@@ -1,0 +1,63 @@
+{% extends 'blog/base.html' %}
+
+{% block title %}Post Blog{% endblock title%}
+{% block content %}
+<section class="footer-2 section-padding gray-bg pb-5">
+  <div class="container">
+    <div class="row justify-content-center">
+
+      <div class="col-lg-6">
+        <div class="subscribe-footer text-center">
+          <div class="form-group mb-0">
+            <h2 class="mb-3">Post Blog</h2>
+               <p class="mb-4" id="statusMsgs">
+             Mobile users <i class="ti-arrow-right" style="margin-right:5px;"></i> on Dekstop Version.<p>
+                {% for msg in messages%}
+                <div class="alert alert-danger mt-2">
+                  {{msg}}
+                </div>
+                {% endfor%}
+                
+                <form action="{% url 'addpost' %}" method="post" enctype="multipart/form-data">
+                  <div class="form-group form-row align-items-center mb-0">
+                    {% csrf_token%}
+                    <!-- title -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="text" id="id_title" name="title" class="form-control" placeholder="Enter Post Title"  autocomplete="off">
+                    </div>
+                    <!-- -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="file" class="form-control form-control-file" name="image"  />
+                    </div>
+
+
+                    <select class="form-control mt-2" name="category">
+                      {% for cat in form.category %}
+                      {{cat}}
+                      {% endfor%}
+                    </select>
+
+
+                    <div class="col-sm-9 mt-3">
+                      {{form.media}}
+                      {{form.description}}
+                    </div>
+
+                  </div>
+                  <div class="col-sm-3 mt-2">
+                    <button type="submit" class="btn btn-dark" id="post">POST</button>
+                  </div>
+                </form>
+              </div>
+            </div>
+          </div>
+        </div>
+
+
+      </div>
+    </section>
+    {% endblock content%}
+
+    {% block extra_js%}
+
+    {% endblock extra_js%}

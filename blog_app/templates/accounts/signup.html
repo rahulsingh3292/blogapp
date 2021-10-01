@@ -1,0 +1,90 @@
+{% extends 'blog/base.html' %}
+{% load static %}
+{% block title %}Signup{% endblock title%}
+{% block extra_css%} 
+  <style type="text/css" media="all">
+    .form-control{
+      font-family: 'Arvo', serif;
+    }
+  </style>
+{% endblock extra_css%} 
+{% block content %}
+ 
+  <section class="footer-2 section-padding gray-bg pb-5">
+    <div class="container">
+      <div class="row justify-content-center">
+        
+        <div class="col-lg-6">
+          <div class="subscribe-footer text-center">
+            <div class="form-group mb-0">
+              <h2 class="mb-3">Singup To Revolve</h2>
+              <p class="mb-4" id="statusMsgs">
+                Create An account to post your blog.<p>
+                  <div class="form-group form-row align-items-center mb-0">
+                   {% csrf_token%}
+                   <!-- username -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="text" id="username" class="form-control" placeholder="Enter username" autocomplete="off">
+                    </div>
+                    <!-- first name -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="text" id="first_name" class="form-control" placeholder="Enter First Name" autocomplete="off">
+                    </div>
+                   <!-- last Name -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="text" id="last_name" class="form-control" placeholder="Enter Last Name (optional)"autocomplete="off">
+                    </div>
+                   <!-- Email -->
+                    <div class="col-sm-9 mt-2">
+                      <input type="email" id="email" class="form-control" placeholder="Enter Email Address" autocomplete="off">
+                    </div>
+                    <!-- pass --> 
+                    <div class="col-sm-9 mt-2">
+                      <input type="password" id="password" class="form-control" placeholder="Enter your password" autocomplete="off">
+                    </div>
+                    <!-- confirm pass-->
+                    <div class="col-sm-9 mt-2">
+                      <input type="password" id="c_pass" class="form-control" placeholder="confirm your password" autocomplete="off">
+                    </div>
+                   
+                    
+                    
+                    <div class="col-sm-3">
+                      <button type="button" class="btn btn-dark "  id="signup">Signup</button>
+                    </div>
+               
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="footer-btm mt-5 pt-4 border-top">
+            <div class="row">
+              <div class="col-lg-12">
+                <ul class="list-inline footer-socials-2 text-center">
+            
+                  <li class="list-inline-item"><a href="/accounts/login/">SignIn</a></li>
+                  <li class="list-inline-item"><a href="/">Home</a></li>
+            
+               
+                </ul>
+              </div>
+            </div>
+            <div class="row justify-content-center">
+              <div class="col-lg-6">
+                <div class="copyright text-center ">
+                  @ copyright all reserved to <a href="/">Revolve</a>
+                </div>
+              </div>
+            </div>
+          </div>
+      
+        </div>
+      </section>
+{% endblock content%}
+
+{% block extra_js %}
+<script src="{% static 'js/signup.js'  %}"></script>
+  
+{% endblock extra_js %}

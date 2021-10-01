@@ -1,0 +1,60 @@
+{% extends 'blog/base.html' %}
+{% load static%}
+
+{% block title %}your posts{% endblock title%}
+{% block content %}
+
+<section class="section-padding">
+  {% if posts%}
+  <div class="container">
+    <div class="row">
+
+      <!-- Posts Start Here -->
+
+      <div class="col-lg-12 col-md-12 col-sm-12 col-xs-12">
+              <div class="container mb-4">
+        <h6 class="text-center">Your All Posts</h6>
+      </div>
+        <div class="row">
+           
+ {% for post in posts %}
+          <div class="col-lg-3 col-md-6">
+            <article class="post-grid mb-5">
+              <a class="post-thumb mb-4 d-block" href="{% url 'post_detail' post.slug %}">
+                <img src="{{post.image.url}}" alt="Error to Load Image.." class="img-fluid w-100">
+              </a>
+              <span class="cat-name text-color font-extra text-sm text-uppercase letter-spacing-1">{{post.category}}</span>
+              <h3 class="post-title mt-1"><a href="{% url  'post_detail' post.slug %}">{{post.title}}</a></h3>
+
+              <span class="text-muted letter-spacing text-uppercase font-sm">{{post.created_at}}</span>
+
+            </article>
+          </div>
+            {% endfor %}
+        </div>
+      </div>
+
+      <!-- Posts  End here-->
+      
+      <div class="m-auto">
+        <div class="pagination mt-5 pt-4">
+          <ul class="list-inline ">
+                {% if posts.has_previous%}
+            <li class="list-inline-item"><a href="?page={{posts.previous_page_number}}" class="prev-posts"><i class="ti-arrow-left"></i></a></li>
+            {% endif %}
+            <li class="list-inline-item"><a href="?page={{posts.number}}" class="active">{{posts.number}}</a></li>
+    {% if posts.has_next %}
+            <li class="list-inline-item"><a href="?page={{posts.next_page_number}}" class="next-posts"><i class="ti-arrow-right"></i></a></li>
+            {% endif %}
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+  {% else%}
+       <div class="container ml-2">
+     <h5 class="text-center">There are no any posts by this user.</h5>
+   </div>
+  {% endif %}
+</section>
+{% endblock content%}
