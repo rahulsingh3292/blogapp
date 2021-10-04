@@ -12,7 +12,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bi@bn&%jt!!^gq=wlz74lu&6$qg-1(-2wq=&v)+r#()h75bpkm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
 ALLOWED_HOSTS = ["revolve-blog.herokuapp.com"]
 
