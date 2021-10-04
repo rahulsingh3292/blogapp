@@ -20,7 +20,7 @@ ALLOWED_HOSTS = ["revolve-blog.herokuapp.com"]
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.sites',
+    #'django.contrib.sites',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
