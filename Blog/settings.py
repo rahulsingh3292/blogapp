@@ -12,9 +12,9 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 SECRET_KEY = 'django-insecure-bi@bn&%jt!!^gq=wlz74lu&6$qg-1(-2wq=&v)+r#()h75bpkm'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ["revolve-blog.herokuapp.com"]
 
 
 # Application definition
@@ -35,11 +35,12 @@ INSTALLED_APPS = [
 
 handler404 = "blog_app.views.page_not_found_404"
 GOOGLE_DRIVE_STORAGE_JSON_KEY_FILE ="blog_app/drive.json"
-GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = '/media'
+GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = '/media/'
 
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    "whotenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -115,10 +116,13 @@ USE_TZ = True
 
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / "static"
+STATIC_ROOT = os.path.join(BASE_DIR,"staticfiles")
+
+STATICFILES_DIRS =[os.path.join(BASE_DIR,"static")]
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR,"media")
-CKEDITOR_UPLOAD_PATH = "blogExtraImages"
+CKEDITOR_UPLOAD_PATH = "/blogExtraImages/"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
@@ -132,4 +136,4 @@ EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com"
 EMAIL_PORT = 587
 EMAIL_HOST_USER = "rahulsingh32929@gmail.com"
-EMAIL_HOST_PASSWORD = "email_pass"
+EMAIL_HOST_PASSWORD = "r1a2h3u4l5"
