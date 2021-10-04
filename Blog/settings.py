@@ -40,7 +40,7 @@ GOOGLE_DRIVE_STORAGE_MEDIA_ROOT = '/media/'
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    "whotenoise.middleware.WhiteNoiseMiddleware",
+    "whitenoise.middleware.WhiteNoiseMiddleware",
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -62,7 +62,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
-           'django.template.context_processors.request',
+      
             ],
         },
     },
